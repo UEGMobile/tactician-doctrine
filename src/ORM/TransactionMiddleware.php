@@ -35,6 +35,12 @@ class TransactionMiddleware implements Middleware
      */
     public function execute($command, callable $next)
     {
+        if(!$this->entityManager->isOpen()){
+            // if the entity manager is closed in a previous command, reset the entity manager
+            $this->entityManager = $this->entityManager->create(
+                $this->entityManager->getConnection(), $this->entityManager->getConfiguration());
+        }
+
         $this->entityManager->beginTransaction();
 
         try {

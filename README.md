@@ -30,7 +30,7 @@ That's it. Each command you execute will now open and close a new transaction.
 
 If a command fires off more commands, be aware that those commands will run in the same transaction as the parent. It is recommended that you run each command as a separate transaction, so to prevent this from happening, use the [`LockingMiddleware` that ships in Tactician core](http://tactician.thephpleague.com/plugins/locking-middleware/). This will queue the commands up internally until the parent command has completed.
 
-If an exception is raised while handling the command, the transaction is rolled back, the EntityManager closed, and the exception rethrown.
+If an exception is raised while handling the command, the transaction is rolled back, the EntityManager closed, and the exception rethrown. For the next commands, if the entity manager is closed, the TransactionMiddleware reset the entity manager. 
 
 ## Symfony integration
 When using the [tactician-bundle] (https://github.com/thephpleague/tactician-bundle), don't forget to add the Doctrine middleware to your Symfony config:
